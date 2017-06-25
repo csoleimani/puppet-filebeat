@@ -21,14 +21,8 @@ class filebeat::params {
   $run_options          = {}
   $use_generic_template = false
   $kernel_fail_message  = "${::kernel} is not supported by filebeat."
+  $conf_template        = "${module_name}/filebeat.yml.erb"
 
-  # These are irrelevant as long as the template is set based on the major_version parameter
-  # if versioncmp('1.9.1', $::rubyversion) > 0 {
-  #   $conf_template = "${module_name}/filebeat.yml.ruby18.erb"
-  # } else {
-  #   $conf_template = "${module_name}/filebeat.yml.erb"
-  # }
-  #
   case $::kernel {
     'Linux'   : {
       $package_ensure  = present

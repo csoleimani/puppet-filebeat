@@ -26,12 +26,6 @@ class filebeat::config {
 
   case $::kernel {
     'Linux'   : {
-
-      $filebeat_path = $filebeat::real_version ? {
-        '1'     => '/usr/bin/filebeat',
-        default => '/usr/share/filebeat/bin/filebeat',
-      }
-
       file {'filebeat.yml':
         ensure       => $filebeat::file_ensure,
         path         => $filebeat::config_file,
@@ -39,7 +33,7 @@ class filebeat::config {
         owner        => 'root',
         group        => 'root',
         mode         => $filebeat::config_file_mode,
-        validate_cmd => "${filebeat_path} -N -configtest -c %",
+        validate_cmd => '/usr/share/filebeat/bin/filebeat -N -configtest -c %',
         notify       => Service['filebeat'],
         require      => File['filebeat-config-dir'],
       }

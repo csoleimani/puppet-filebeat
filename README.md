@@ -2,10 +2,6 @@
 
 [![Build Status](https://travis-ci.org/pcfens/puppet-filebeat.svg?branch=master)](https://travis-ci.org/pcfens/puppet-filebeat)
 
-## Upgrading from <= v 0.10.4
-Be sure to read the changelog as there are up to 2 breaking changes introduced in v0.11.0 related
-to processors and the default registry path
-
 #### Table of Contents
 
 1. [Description](#description)
@@ -40,19 +36,6 @@ The `filebeat` module installs and configures the [filebeat log shipper](https:/
 
 By default `filebeat` adds a software repository to your system, and installs filebeat along
 with required configurations.
-
-### Upgrading to Filebeat 5.x
-
-If you use this module on a system with filebeat 1.x installed, and you keep your current parameters
-nothing will change. Setting `major_version` to '5' will modify the configuration template and update
-package repositories, but won't update the package itself. To update the package set the
-`package_ensure` parameter to at least 5.0.0.
-
-Windows users should set `major_version` to 5 and update the `download_url` parameter to the correct
-[download](https://www.elastic.co/downloads/beats/filebeat).
-
-If you're on a Debian based system, you need to make sure that the apt-transport-https package
-is installed if you want this module to manage the repository for you (it does by default).
 
 ### Setup Requirements
 
@@ -104,7 +87,9 @@ class { 'filebeat':
 
 ```
 
-[Shipper](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-configuration-details.html#configuration-shipper) and [logging](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-configuration-details.html#configuration-logging) options can be configured the same way, and are documented on the [elastic website](https://www.elastic.co/guide/en/beats/filebeat/current/index.html).
+[Shipper](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-configuration-details.html#configuration-shipper) and
+[logging](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-configuration-details.html#configuration-logging) options
+can be configured the same way, and are documented on the [elastic website](https://www.elastic.co/guide/en/beats/filebeat/current/index.html).
 
 ### Adding a prospector
 
@@ -140,14 +125,10 @@ as documented in the filebeat [configuration documentation](https://www.elastic.
 
 ### Prospectors in Hiera
 
-Prospectors can be declared in hiera using the `prospectors` parameter. By default, hiera will not merge
-prospector declarations down the hiera hierarchy. To change the behavior in puppet 3 use the `prospectors_merge`
-parameter. In puppet 4, you can use `prospectors_merge`, but can also use the
+Prospectors can be defined in hiera using the `prospectors` parameter. By default, hiera will not merge
+prospector declarations down the hiera hierarchy. That behavior can be changed by configuring the
 [lookup_options](https://docs.puppet.com/puppet/latest/reference/lookup_quick.html#setting-lookupoptions-in-data)
 flag.
-
-When `prospectors_merge` is set to true, `prospectors` will be replaced by the output of
-`hiera_hash('filebeat::prospectors')`.
 
 ### Usage on Windows
 
@@ -209,13 +190,9 @@ For more information please review the documentation [here](https://www.elastic.
 #### Processors in Hiera
 
 Processors can be declared in hiera using the `processors` parameter. By default, hiera will not merge
-processor declarations down the hiera hierarchy. To change the behavior in puppet 3 use the `processors_merge`
-parameter. In puppet 4, you can use `processors_merge`, but can also use the
+processor declarations down the hiera hierarchy. That behavior can be changed by configuring the
 [lookup_options](https://docs.puppet.com/puppet/latest/reference/lookup_quick.html#setting-lookupoptions-in-data)
 flag.
-
-When `processors_merge` is set to true, `processors` will be replaced by the output of
-`hiera_hash('filebeat::processors')`.
 
 ## Reference
  - [**Public Classes**](#public-classes)
@@ -239,7 +216,6 @@ When `processors_merge` is set to true, `processors` will be replaced by the out
 Installs and configures filebeat.
 
 **Parameters within `filebeat`**
-- `major_version`: [String] The major version of filebeat to install. Should be either undef, 1, or 5. (default 5 if 1 not already installed)
 - `package_ensure`: [String] The ensure parameter for the filebeat package If set to absent,
   prospectors and processors passed as parameters are ignored and everything managed by
   puppet will be removed. (default: present)
@@ -388,20 +364,6 @@ Be sure to include a path or the file will be put at the root of your filesystem
 ### Debian Systems
 
 Filebeat 5.x and newer requires apt-transport-https, but this module won't install it for you.
-
-### Pre-1.9.1 Ruby
-If you're on a system running a Ruby pre-1.9.1, hashes aren't sorted consistently, causing puppet runs to
-not be idempotent. To fix this, a limited template is used if the rubyversion is pre-1.9.1.
-The limited template only supports elasticsearch, logstash, file, and console outputs, and not all options
-may be supported (there is no warning when an option is omitted). Unlike with newer rubies, as new versions
-of filebeat are released, this template may not work until it's updated, even if you're using an updated
-configuration hash.
-
-If you don't care about keeping puppet idempotent, this can be overridden by setting the `conf_template`
-parameter to 'filebeat/filebeat.yml.erb'.
-
-See [templates/filebeat.yml.ruby18.erb](https://github.com/pcfens/puppet-filebeat/blob/master/templates/filebeat.yml.ruby18.erb)
-for the all of the details.
 
 ### Using config_file
 There are a few very specific use cases where you don't want this module to directly manage the filebeat

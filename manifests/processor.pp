@@ -1,7 +1,7 @@
 define filebeat::processor(
-  $ensure         = present,
-  $priority       = 10,
-  $processor_name = $name,
+  Enum['present', 'absent'] $ensure         = present,
+  Integer $priority       = 10,
+  Enum['add_cloud_metadata', 'decode_json_fields', 'drop_event', 'drop_fields', 'include_fields'] $processor_name = $name,
   $params         = undef,
   $when           = undef,
 ) {
@@ -9,10 +9,6 @@ define filebeat::processor(
 
   validate_integer($priority)
   validate_string($processor_name)
-
-  if versioncmp($filebeat::real_version, '5') < 0 {
-    fail('Processors only work on Filebeat 5.0 and higher')
-  }
 
   if $priority < 10 {
     $_priority = "0${priority}"

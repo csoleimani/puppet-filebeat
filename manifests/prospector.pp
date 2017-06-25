@@ -36,18 +36,10 @@ define filebeat::prospector (
   validate_array($paths, $exclude_files, $include_lines, $exclude_lines, $tags)
   validate_bool($tail_files, $close_renamed, $close_removed, $close_eof, $clean_removed, $symlinks)
 
-  $prospector_template = $filebeat::real_version ? {
-    '1'     => 'prospector1.yml.erb',
-    default => 'prospector5.yml.erb',
-  }
+  $prospector_template = 'prospector.yml.erb'
 
   case $::kernel {
     'Linux' : {
-      $filebeat_path = $filebeat::real_version ? {
-        '1'     => '/usr/bin/filebeat',
-        default => '/usr/share/filebeat/bin/filebeat',
-      }
-
       file { "filebeat-${name}":
         ensure       => $ensure,
         path         => "${filebeat::config_dir}/${name}.yml",
@@ -55,7 +47,7 @@ define filebeat::prospector (
         group        => 'root',
         mode         => $::filebeat::config_file_mode,
         content      => template("${module_name}/${prospector_template}"),
-        validate_cmd => "${filebeat_path} -N -configtest -c %",
+        validate_cmd => '/usr/share/filebeat/bin/filebeat -N -configtest -c %',
         notify       => Service['filebeat'],
       }
     }
