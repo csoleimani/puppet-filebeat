@@ -6,6 +6,7 @@ Changelog
 
 - Drop support for Puppet 3
 - Drop support for Filebeat versions before 5
+- Add support for Puppet 5
 
 ## [v0.12.0](https://github.com/pcfens/puppet-filebeat/tree/v0.12.0)
 [Full Changelog](https://github.com/pcfens/puppet-filebeat/compare/v0.11.2...v0.12.0)
