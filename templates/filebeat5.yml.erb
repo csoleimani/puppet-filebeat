@@ -193,9 +193,6 @@ output.elasticsearch:
     <%- if @filebeat_config['output']['elasticsearch']['ssl']['key'] != nil -%>
     key: "<%= @filebeat_config['output']['elasticsearch']['ssl']['key'] %>"
     <%- end -%>
-    <%- if @filebeat_config['output']['elasticsearch']['certificate']['authority'] != nil -%>
-    key: "<%= @filebeat_config['output']['elasticsearch']['certificate']['authority'] %>"
-    <%- end -%>
     <%- if @filebeat_config['output']['elasticsearch']['ssl']['key_passphrase'] != nil -%>
     key_passphrase: '<%= @filebeat_config['output']['elasticsearch']['ssl']['key_passphrase'] %>'
     <%- end -%>
@@ -228,6 +225,9 @@ output.logstash:
   <%- end -%>
   <%- if @filebeat_config['output']['logstash']['ssl_key'] != nil -%>
   ssl.key: <%= @filebeat_config['output']['logstash']['ssl_key'] %>
+  <%- end -%>
+  <%- if @filebeat_config['output']['logstash']['certificate_authority'] != nil -%>
+  ssl.key: <%= @filebeat_config['output']['logstash']['certificate_authority'] %>
   <%- end -%>
   <%- if @filebeat_config['output']['logstash']['worker'] != nil -%>
   worker: <%= @filebeat_config['output']['logstash']['worker'] %>
