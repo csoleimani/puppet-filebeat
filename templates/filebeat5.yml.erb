@@ -193,6 +193,9 @@ output.elasticsearch:
     <%- if @filebeat_config['output']['elasticsearch']['ssl']['key'] != nil -%>
     key: "<%= @filebeat_config['output']['elasticsearch']['ssl']['key'] %>"
     <%- end -%>
+    <%- if @filebeat_config['output']['elasticsearch']['certificate']['authority'] != nil -%>
+    key: "<%= @filebeat_config['output']['elasticsearch']['certificate']['authority'] %>"
+    <%- end -%>
     <%- if @filebeat_config['output']['elasticsearch']['ssl']['key_passphrase'] != nil -%>
     key_passphrase: '<%= @filebeat_config['output']['elasticsearch']['ssl']['key_passphrase'] %>'
     <%- end -%>
