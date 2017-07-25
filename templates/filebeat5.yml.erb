@@ -230,8 +230,6 @@ output.logstash:
   <%- @filebeat_config['output']['logstash']['certificate_authority'].each do |authority| -%>
     - <%= authority %>
   <%- end -%>
-  ssl.key: <%= @filebeat_config['output']['logstash']['certificate_authority'] %>
-  <%- end -%>
   <%- if @filebeat_config['output']['logstash']['worker'] != nil -%>
   worker: <%= @filebeat_config['output']['logstash']['worker'] %>
   <%- end -%>
