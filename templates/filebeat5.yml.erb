@@ -227,8 +227,8 @@ output.logstash:
   ssl.key: <%= @filebeat_config['output']['logstash']['ssl_key'] %>
   <%- end -%>
   <%- if @filebeat_config['output']['logstash']['certificate_authority'] != nil -%>
-  <%- @filebeat_config['output']['logstash']['certificate_authority'].each do |authority| -%>
-    - <%= authority %>
+  <%- @filebeat_config['output']['logstash']['certificate_authority'].each do |ca| -%>
+    - <%= ca %>
   <%- end -%>
   <%- if @filebeat_config['output']['logstash']['worker'] != nil -%>
   worker: <%= @filebeat_config['output']['logstash']['worker'] %>
